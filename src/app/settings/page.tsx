@@ -268,7 +268,7 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      <Tabs defaultValue="general" className="w-full flex flex-col md:flex-row gap-6">
+      <Tabs defaultValue="general" orientation="vertical" className="w-full flex flex-col md:flex-row gap-6">
         <TabsList className="flex flex-col h-auto bg-transparent justify-start space-y-1 w-full md:w-64 shrink-0">
           <TabsTrigger value="general" className="w-full justify-start data-[state=active]:bg-primary/10 data-[state=active]:text-primary px-4 py-2.5">
             <Building className="h-4 w-4 mr-3" /> General
