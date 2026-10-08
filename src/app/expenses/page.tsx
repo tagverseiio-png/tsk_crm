@@ -70,7 +70,6 @@ export default function ExpensesPage() {
           <p className="text-muted-foreground">Manage and categorize your business spending.</p>
         </div>
         <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-          {/* @ts-expect-error asChild type issue */}
           <DialogTrigger render={<Button />}>
               <Plus className="mr-2 h-4 w-4" /> Add Expense
             </DialogTrigger>

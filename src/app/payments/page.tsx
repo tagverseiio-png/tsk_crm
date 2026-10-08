@@ -116,7 +116,7 @@ export default function PaymentsPage() {
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Payment Method</label>
-                <Select value={method} onValueChange={setMethod}>
+                <Select value={method} onValueChange={(val) => val && setMethod(val)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select method" />
                   </SelectTrigger>
