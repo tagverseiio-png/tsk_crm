@@ -34,14 +34,39 @@ export default function CalendarPage() {
 
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-  // Mock events
-  const events = [
-    { day: 10, title: "Design Homepage", type: "task", color: "bg-blue-100 text-blue-800" },
-    { day: 15, title: "Client Meeting", type: "meeting", color: "bg-purple-100 text-purple-800" },
-    { day: 22, title: "Invoice Due", type: "invoice", color: "bg-rose-100 text-rose-800" },
-    { day: 25, title: "Project Deadline", type: "project", color: "bg-emerald-100 text-emerald-800" },
-    { day: 8, title: "Team Sync", type: "meeting", color: "bg-purple-100 text-purple-800" },
-  ];
+  const [events, setEvents] = useState([
+    { day: 10, month: 9, year: 2026, title: "Design Homepage", type: "task", color: "bg-blue-100 text-blue-800" },
+    { day: 15, month: 9, year: 2026, title: "Client Meeting", type: "meeting", color: "bg-purple-100 text-purple-800" },
+    { day: 22, month: 9, year: 2026, title: "Invoice Due", type: "invoice", color: "bg-rose-100 text-rose-800" },
+    { day: 25, month: 9, year: 2026, title: "Project Deadline", type: "project", color: "bg-emerald-100 text-emerald-800" },
+    { day: 8, month: 9, year: 2026, title: "Team Sync", type: "meeting", color: "bg-purple-100 text-purple-800" },
+  ]);
+
+  const [newEventTitle, setNewEventTitle] = useState("");
+  const [newEventDate, setNewEventDate] = useState("");
+  const [newEventType, setNewEventType] = useState("meeting");
+
+  const handleSaveEvent = () => {
+    if (!newEventTitle || !newEventDate) return;
+    
+    const dateObj = new Date(newEventDate);
+    const day = dateObj.getDate();
+    const month = dateObj.getMonth();
+    const year = dateObj.getFullYear();
+    
+    let color = "bg-primary/20 text-primary";
+    if (newEventType === "task") color = "bg-blue-100 text-blue-800";
+    if (newEventType === "meeting") color = "bg-purple-100 text-purple-800";
+    if (newEventType === "invoice") color = "bg-rose-100 text-rose-800";
+    if (newEventType === "project") color = "bg-emerald-100 text-emerald-800";
+
+    setEvents([...events, { day, month, year, title: newEventTitle, type: newEventType, color }]);
+    
+    setNewEventTitle("");
+    setNewEventDate("");
+    setNewEventType("meeting");
+    setIsAddOpen(false);
+  };
 
   return (
     <div className="flex flex-col gap-6 h-full">
@@ -61,12 +86,12 @@ export default function CalendarPage() {
             <div className="grid gap-4 py-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium">Event Title</label>
-                <Input placeholder="Enter event title" />
+                <Input placeholder="Enter event title" value={newEventTitle} onChange={(e) => setNewEventTitle(e.target.value)} />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Date</label>
-                  <Input type="date" />
+                  <Input type="date" value={newEventDate} onChange={(e) => setNewEventDate(e.target.value)} />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Time</label>
@@ -75,7 +100,7 @@ export default function CalendarPage() {
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Event Type</label>
-                <Select defaultValue="meeting">
+                <Select value={newEventType} onValueChange={(val) => val && setNewEventType(val)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
@@ -90,7 +115,7 @@ export default function CalendarPage() {
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setIsAddOpen(false)}>Cancel</Button>
-              <Button onClick={() => setIsAddOpen(false)}>Save Event</Button>
+              <Button onClick={handleSaveEvent}>Save Event</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -127,7 +152,7 @@ export default function CalendarPage() {
           
           {Array.from({ length: daysInMonth }).map((_, i) => {
             const day = i + 1;
-            const dayEvents = events.filter(e => e.day === day && currentDate.getMonth() === 9 && currentDate.getFullYear() === 2026);
+            const dayEvents = events.filter(e => e.day === day && e.month === currentDate.getMonth() && e.year === currentDate.getFullYear());
             const isToday = day === 8 && currentDate.getMonth() === 9 && currentDate.getFullYear() === 2026;
             
             return (
